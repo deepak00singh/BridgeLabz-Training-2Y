@@ -1,4 +1,4 @@
-public class Main {
+public class Shrink {
 
     int stack[] = new int[5];
     int top = -1;
@@ -42,8 +42,7 @@ public class Main {
     }
 
     public static void main(String[] args) {
-
-        Main s = new Main();
+        Shrink s = new Shrink();
 
         s.push(10);
         s.push(20);
