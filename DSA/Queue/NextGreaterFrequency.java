@@ -1,36 +1,47 @@
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.util.*;
 
 public class NextGreaterFrequency {
-    public static int[] findNextGreaterFrequency(int[] arr) {
-        Map<Integer, Integer> frequency = new HashMap<>();
-        for (int value : arr) {
-            frequency.put(value, frequency.getOrDefault(value, 0) + 1);
-        }
 
-        int[] result = new int[arr.length];
-        Arrays.fill(result, -1);
+    public static int[] solve(int[] arr) {
 
-        Stack<Integer> stack = new Stack<>();
+        // ✅ 1. Frequency count (simple tarika)
+        HashMap<Integer, Integer> freq = new HashMap<>();
 
         for (int i = 0; i < arr.length; i++) {
-            while (!stack.isEmpty()
-                    && frequency.get(arr[i]) > frequency.get(arr[stack.peek()])) {
-                result[stack.pop()] = arr[i];
+            int val = arr[i];
+
+            if (freq.containsKey(val)) {
+                freq.put(val, freq.get(val) + 1);
+            } else {
+                freq.put(val, 1);
             }
-            stack.push(i);
         }
 
-        return result;
+        // ✅ 2. Result array (manually fill -1)
+        int[] res = new int[arr.length];
+        for (int i = 0; i < res.length; i++) {
+            res[i] = -1;
+        }
+
+        // ✅ 3. Stack (same)
+        Stack<Integer> st = new Stack<>();
+
+        // 🔥 Main logic (same as yours)
+        for (int i = 0; i < arr.length; i++) {
+
+            while (!st.isEmpty() && freq.get(arr[i]) > freq.get(arr[st.peek()])) {
+                int index = st.pop();
+                res[index] = arr[i];
+            }
+
+            st.push(i);
+        }
+
+        return res;
     }
 
     public static void main(String[] args) {
         int[] arr = {1, 1, 2, 3, 4, 2, 1};
-        int[] result = findNextGreaterFrequency(arr);
-
-        System.out.println("Input: " + Arrays.toString(arr));
-        System.out.println("Next Greater Frequency: " + Arrays.toString(result));
+        System.out.println(Arrays.toString(solve(arr)));
     }
 }
